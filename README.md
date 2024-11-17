@@ -91,4 +91,4 @@ This project is licensed under the MIT License.
 
 ## Author
 
-Created by Your Vincenzo Auricchio. Feedback and contributions are always welcome!
+Created by Vincenzo Auricchio. Feedback and contributions are always welcome!
