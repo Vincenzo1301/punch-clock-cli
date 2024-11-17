@@ -57,17 +57,21 @@ def current_work_time():
     start_time = datetime.strptime(start_time_str, "%H:%M").time()
     start_datetime = datetime.combine(datetime.today(), start_time)
 
-    current_datetime = store[date_str].get("end") if store[date_str].get("end") else datetime.now()
-    if current_datetime < start_datetime:
-        print(f"Current time is earlier than the start time for {date_str}.")
-        return
-
-    work_duration = current_datetime - start_datetime
-    if store[date_str].get("end"):
-        message = f"You worked for {date_str}: {(work_duration.seconds // 3600)}h {(work_duration.seconds // 60) % 60}m."
+    end_time_str = store[date_str].get("end")
+    if end_time_str:
+        end_time = datetime.strptime(end_time_str, "%H:%M").time()
+        current_datetime = datetime.combine(datetime.today(), end_time)
     else:
-        message = f"Current work time for {date_str}: {(work_duration.seconds // 3600)}h {(work_duration.seconds // 60) % 60}m."
+        current_datetime = datetime.now()
 
+    # Calculate work duration
+    work_duration = current_datetime - start_datetime
+
+    # Generate the message
+    if end_time_str:
+        message = f"You worked on {date_str} for {(work_duration.seconds // 3600)} hours and {(work_duration.seconds // 60) % 60} minutes."
+    else:
+        message = f"Your current work time for {date_str} is {(work_duration.seconds // 3600)} hours and {(work_duration.seconds // 60) % 60} minutes."
     print(message)
 
 
