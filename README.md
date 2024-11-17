@@ -40,11 +40,6 @@ cd time-manager-cli
 ```
 
 2. Ensure Python 3.6 or higher is installed.
-3. Run the script directly:
-
-```bash
-python time_manager.py
-```
 
 ## Usage
 
