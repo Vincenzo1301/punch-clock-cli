@@ -3,7 +3,6 @@ import argparse
 import json
 import os
 
-# Path to the JSON file for storing data
 STORE_FILE = "store.json"
 
 
@@ -26,15 +25,16 @@ def add_time_entry(time_type):
     """Add or update a start or end time for today's date."""
     store = load_store()
 
-    # Get today's date and the current time
     date_str = datetime.today().strftime("%d.%m.%Y")
     time_value = datetime.now().strftime("%H:%M")
 
-    # Ensure the date exists as a dictionary
+    if time_type == "end" and date_str not in store:
+        print(f"No start time for {date_str} defined.")
+        return
+
     if date_str not in store:
         store[date_str] = {}
 
-    # Add or update the time type (start or end)
     store[date_str][time_type] = time_value
 
     save_store(store)
@@ -64,10 +64,8 @@ def current_work_time():
     else:
         current_datetime = datetime.now()
 
-    # Calculate work duration
     work_duration = current_datetime - start_datetime
 
-    # Generate the message
     if end_time_str:
         message = f"You worked on {date_str} for {(work_duration.seconds // 3600)} hours and {(work_duration.seconds // 60) % 60} minutes."
     else:
@@ -101,9 +99,7 @@ def main():
 
     subparsers.add_parser("list", help="List all time entries")
 
-    # Parse arguments
     args = parser.parse_args()
-
     if args.command == "add":
         add_time_entry(args.time_type)
     elif args.command == "list":
