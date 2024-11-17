@@ -21,7 +21,7 @@ def save_store(data):
         json.dump(data, f, indent=4)
 
 
-def add_time_entry(time_type):
+def add_work_entry(time_type):
     """Add or update a start or end time for today's date."""
     store = load_store()
 
@@ -39,6 +39,31 @@ def add_time_entry(time_type):
 
     save_store(store)
     print(f"Added: {date_str} => {time_type}: {time_value}")
+
+
+def add_break_entry(time_type):
+    store = load_store()
+
+    date_str = datetime.today().strftime("%d.%m.%Y")
+    time_value = datetime.now().strftime("%H:%M")
+
+    if date_str not in store:
+        print(f"No start time for {date_str} defined.")
+        return
+
+    if "break" not in store[date_str]:
+        store[date_str]["break"] = {}
+
+    if time_type == "end" and not store[date_str]["break"].get("start"):
+        print(f"No break start time for {date_str} defined.")
+        return
+
+    # Add the time entry to "break"
+    store[date_str]["break"][time_type] = time_value
+
+    # Save the updated store
+    save_store(store)
+    print(f"Added break time for {date_str}: {time_type} => {time_value}")
 
 
 def current_work_time():
@@ -92,7 +117,10 @@ def main():
     parser = argparse.ArgumentParser(description="CLI Tool to manage time entries.")
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
 
-    add_parser = subparsers.add_parser("add", help="Add or update a time entry")
+    add_parser = subparsers.add_parser("work", help="Add or update a time entry")
+    add_parser.add_argument("time_type", type=str, choices=["start", "end"], help="Time type: start or end")
+
+    add_parser = subparsers.add_parser("break", help="Add or update a time entry")
     add_parser.add_argument("time_type", type=str, choices=["start", "end"], help="Time type: start or end")
 
     subparsers.add_parser("current", help="Get current work time")
@@ -100,8 +128,10 @@ def main():
     subparsers.add_parser("list", help="List all time entries")
 
     args = parser.parse_args()
-    if args.command == "add":
-        add_time_entry(args.time_type)
+    if args.command == "work":
+        add_work_entry(args.time_type)
+    elif args.command == "break":
+        add_break_entry(args.time_type)
     elif args.command == "list":
         list_entries()
     elif args.command == "current":
