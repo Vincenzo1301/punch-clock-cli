@@ -50,8 +50,8 @@ Run the script using the following commands:
 Log the start or end time of your workday:
 
 ```bash
-python time_manager.py work start
-python time_manager.py work end
+python punch-clock.py work start
+python punch-clock.py work end
 ```
 
 ### Add Break Entry
@@ -59,8 +59,8 @@ python time_manager.py work end
 Log the start or end time of your break:
 
 ```bash
-python time_manager.py break start
-python time_manager.py break end
+python punch-clock.py break start
+python punch-clock.py break end
 ```
 
 ### Calculate Current Work Time
@@ -68,7 +68,7 @@ python time_manager.py break end
 View your total work time so far today:
 
 ```bash
-python time_manager.py current
+python punch-clock.py current
 ```
 
 ### List All Entries
@@ -76,7 +76,7 @@ python time_manager.py current
 Review all stored entries:
 
 ```bash
-python time_manager.py list
+python punch-clock.py list
 ```
 
 ## Contribution
@@ -91,4 +91,4 @@ This project is licensed under the MIT License.
 
 ## Author
 
-Created by Your Vincenzo Auricchio. Feedback and contributions are always welcome!
+Created by Vincenzo Auricchio. Feedback and contributions are always welcome!
