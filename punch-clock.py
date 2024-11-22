@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 import argparse
 import json
 import os
+import pandas as pd
 
 
 class TimeManager:
@@ -150,16 +151,60 @@ class TimeManager:
             print(f"Your current work time for {date_str} is {hours} hours and {minutes} minutes (excluding breaks).")
 
     def list_entries(self):
-        """List all stored time entries from the data store."""
+        """List all stored time entries from the data store in a nice table format."""
         if not self.store:
             print("No entries found.")
             return
 
-        print("Stored Entries:")
-        for date, times in self.store.items():
-            print(f"  {date}:")
-            for time_type, time_value in times.items():
-                print(f"    {time_type}: {time_value}")
+        # Prepare the data for the table
+        table_data = []
+
+        for date_str, data in self.store.items():
+            start_time_str = data.get("start")
+            end_time_str = data.get("end")
+
+            if not start_time_str or not end_time_str:
+                continue  # Skip incomplete entries
+
+            # Calculate break durations
+            total_break_duration = timedelta()
+            if "break" in data:
+                for break_entry in data["break"]:
+                    break_start_str = break_entry.get("start")
+                    break_end_str = break_entry.get("end")
+
+                    if break_start_str and break_end_str:
+                        break_start = datetime.strptime(break_start_str, "%H:%M")
+                        break_end = datetime.strptime(break_end_str, "%H:%M")
+                        total_break_duration += break_end - break_start
+
+            # Calculate total work duration
+            start_time = datetime.strptime(start_time_str, "%H:%M")
+            end_time = datetime.strptime(end_time_str, "%H:%M")
+            work_duration = end_time - start_time
+            effective_work_duration = work_duration - total_break_duration
+
+            # Function to format time as hours and minutes
+            def format_duration(duration):
+                hours, remainder = divmod(duration.seconds, 3600)
+                minutes, _ = divmod(remainder, 60)
+                return f"{hours}h {minutes}m"
+
+            # Add data to table format
+            break_time_str = format_duration(total_break_duration)
+            work_time_str = format_duration(effective_work_duration)
+
+            table_data.append([date_str, start_time.strftime("%H:%M"), end_time.strftime("%H:%M"),
+                               break_time_str, work_time_str])
+
+        # Convert to DataFrame for nice formatting
+        df = pd.DataFrame(table_data, columns=["Date", "Start Time", "End Time", "Break Time", "Work Duration"])
+
+        # Print the table
+        if not df.empty:
+            print(df.to_string(index=False))
+        else:
+            print("No valid entries to display.")
 
 
 def main():
