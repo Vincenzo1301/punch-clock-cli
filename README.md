@@ -20,14 +20,20 @@ The tool uses a simple JSON structure for data storage. Here's an example of how
 
 ```json
 {
-    "17.11.2024": {
-        "start": "09:00",
-        "end": "17:00",
-        "break": {
-            "start": "12:00",
-            "end": "12:30"
-        }
-    }
+  "17.11.2024": {
+    "start": "09:00",
+    "end": "17:00",
+    "break": [
+      {
+        "start": "12:00",
+        "end": "12:30"
+      },
+      {
+        "start": "14:00",
+        "end": "14:30"
+      }
+    ]
+  }
 }
 ```
 
@@ -50,8 +56,8 @@ Run the script using the following commands:
 Log the start or end time of your workday:
 
 ```bash
-python punch-clock.py work start
-python punch-clock.py work end
+python punch-clock.py start
+python punch-clock.py end
 ```
 
 ### Add Break Entry
@@ -59,8 +65,8 @@ python punch-clock.py work end
 Log the start or end time of your break:
 
 ```bash
-python punch-clock.py break start
-python punch-clock.py break end
+python punch-clock.py break
+python punch-clock.py continue
 ```
 
 ### Calculate Current Work Time
