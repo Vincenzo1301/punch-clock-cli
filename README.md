@@ -24,7 +24,6 @@ The tool uses a simple JSON structure for data storage. Here's an example of how
 {
   "17.11.2024": {
     "start": "09:00",
-    "end": "17:00",
     "break": [
       {
         "start": "12:00",
@@ -34,7 +33,8 @@ The tool uses a simple JSON structure for data storage. Here's an example of how
         "start": "14:00",
         "end": "14:30"
       }
-    ]
+    ],
+    "end": "17:00"
   }
 }
 ```
