@@ -23,41 +23,59 @@ class TimeManager:
         with open(self.store_file, "w") as f:
             json.dump(self.store, f, indent=4)
 
-    def add_work_entry(self, time_type):
-        """Add or update a work start or end time for today's date."""
+    def add_work_start(self):
         date_str = datetime.today().strftime("%d.%m.%Y")
         time_value = datetime.now().strftime("%H:%M")
-
-        if time_type == "end" and date_str not in self.store:
-            print(f"No start time for {date_str} defined.")
-            return
 
         if date_str not in self.store:
             self.store[date_str] = {}
 
-        self.store[date_str][time_type] = time_value
+        self.store[date_str]["start"] = time_value
         self.save_store()
-        print(f"Added: {date_str} => {time_type}: {time_value}")
+        print(f"Added: {date_str} => start: {time_value}")
 
-    def add_break_entry(self, time_type):
-        """Add or update a break start or end time for today's date."""
+    def add_work_end(self):
         date_str = datetime.today().strftime("%d.%m.%Y")
         time_value = datetime.now().strftime("%H:%M")
 
-        if date_str not in self.store:
-            print(f"No start time for {date_str} defined.")
+        if date_str not in self.store or "start" not in self.store[date_str]:
+            print(f"No start time for {date_str} defined. Cannot add end time.")
+            return
+
+        self.store[date_str]["end"] = time_value
+        self.save_store()
+        print(f"Added: {date_str} => end: {time_value}")
+
+    def add_break_start(self):
+        date_str = datetime.today().strftime("%d.%m.%Y")
+        time_value = datetime.now().strftime("%H:%M")
+
+        if date_str not in self.store or "start" not in self.store[date_str]:
+            print(f"No work start time for {date_str} defined. Cannot add break start.")
             return
 
         if "break" not in self.store[date_str]:
             self.store[date_str]["break"] = {}
 
-        if time_type == "end" and not self.store[date_str]["break"].get("start"):
-            print(f"No break start time for {date_str} defined.")
+        self.store[date_str]["break"]["start"] = time_value
+        self.save_store()
+        print(f"Added break start time for {date_str}: start => {time_value}")
+
+    def add_break_end(self):
+        date_str = datetime.today().strftime("%d.%m.%Y")
+        time_value = datetime.now().strftime("%H:%M")
+
+        if date_str not in self.store or "start" not in self.store[date_str]:
+            print(f"No work start time for {date_str} defined. Cannot add break end.")
             return
 
-        self.store[date_str]["break"][time_type] = time_value
+        if "break" not in self.store[date_str] or "start" not in self.store[date_str]["break"]:
+            print(f"No break start time for {date_str} defined. Cannot add break end.")
+            return
+
+        self.store[date_str]["break"]["end"] = time_value
         self.save_store()
-        print(f"Added break time for {date_str}: {time_type} => {time_value}")
+        print(f"Added break end time for {date_str}: end => {time_value}")
 
     def current_work_time(self):
         """Calculate and display the current work duration for today."""
@@ -109,20 +127,24 @@ def main():
     parser = argparse.ArgumentParser(description="CLI Tool to manage time entries.")
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
 
-    add_parser = subparsers.add_parser("work", help="Add or update a work time entry")
-    add_parser.add_argument("time_type", type=str, choices=["start", "end"], help="Time type: start or end")
+    subparsers.add_parser("start", help="Start work time entry")
+    subparsers.add_parser("end", help="End a work time entry")
 
-    add_parser = subparsers.add_parser("break", help="Add or update a break time entry")
-    add_parser.add_argument("time_type", type=str, choices=["start", "end"], help="Time type: start or end")
+    subparsers.add_parser("break", help="Add break time entry")
+    subparsers.add_parser("continue", help="Add or update a break time entry")
 
     subparsers.add_parser("current", help="Get current work time")
     subparsers.add_parser("list", help="List all time entries")
 
     args = parser.parse_args()
-    if args.command == "work":
-        time_manager.add_work_entry(args.time_type)
+    if args.command == "start":
+        time_manager.add_work_start()
+    elif args.command == "end":
+        time_manager.add_work_end()
     elif args.command == "break":
-        time_manager.add_break_entry(args.time_type)
+        time_manager.add_break_start()
+    elif args.command == "continue":
+        time_manager.add_break_end()
     elif args.command == "current":
         time_manager.current_work_time()
     elif args.command == "list":
