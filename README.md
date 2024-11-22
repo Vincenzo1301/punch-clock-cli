@@ -1,6 +1,8 @@
 # Time Manager CLI
 
-Welcome to **Time Manager CLI**, a simple yet effective command-line tool for managing your work and break times. This tool allows you to log start and end times for your workdays and breaks, calculate your total working hours, and review all your logged entries. Perfect for tracking your productivity!
+Welcome to **Time Manager CLI**, a simple yet effective command-line tool for managing your work and break times. This
+tool allows you to log start and end times for your workdays and breaks, calculate your total working hours, and review
+all your logged entries. Perfect for tracking your productivity!
 
 ---
 
@@ -38,6 +40,7 @@ The tool uses a simple JSON structure for data storage. Here's an example of how
 ```
 
 ## Installation
+
 1. Clone the repository:
 
 ```bash
@@ -85,8 +88,20 @@ Review all stored entries:
 python punch-clock.py list
 ```
 
+### Example Output
+
+```text
+      Date Start Time End Time Break Time Work Duration
+21.11.2024      09:00    17:00     0h 45m        7h 15m
+22.11.2024      17:58    18:01      0h 1m         0h 2m
+23.11.2024      08:00    16:00     0h 45m        7h 15m
+
+```
+
 ## Contribution
+
 Feel free to contribute to this project by:
+
 - Reporting bugs
 - Suggesting new features
 - Submitting pull requests
