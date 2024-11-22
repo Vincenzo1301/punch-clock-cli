@@ -59,8 +59,8 @@ Run the script using the following commands:
 Log the start or end time of your workday:
 
 ```bash
-python punch-clock.py start
-python punch-clock.py end
+python punch_clock.py start
+python punch_clock.py end
 ```
 
 ### Add Break Entry
@@ -68,8 +68,8 @@ python punch-clock.py end
 Log the start or end time of your break:
 
 ```bash
-python punch-clock.py break
-python punch-clock.py continue
+python punch_clock.py break
+python punch_clock.py continue
 ```
 
 ### Calculate Current Work Time
@@ -77,7 +77,7 @@ python punch-clock.py continue
 View your total work time so far today:
 
 ```bash
-python punch-clock.py current
+python punch_clock.py current
 ```
 
 ### List All Entries
@@ -85,7 +85,7 @@ python punch-clock.py current
 Review all stored entries:
 
 ```bash
-python punch-clock.py list
+python punch_clock.py list
 ```
 
 ### Example Output
