@@ -1,6 +1,6 @@
-# Time Manager CLI
+# Punch Clock CLI
 
-Welcome to **Time Manager CLI**, a simple yet effective command-line tool for managing your work and break times. This
+Welcome to **Punch Clock CLI**, a simple yet effective command-line tool for managing your work and break times. This
 tool allows you to log start and end times for your workdays and breaks, calculate your total working hours, and review
 all your logged entries. Perfect for tracking your productivity!
 
